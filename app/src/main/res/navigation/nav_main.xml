@@ -3,11 +3,17 @@
              xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/helloWorld">
-
+    app:startDestination="@id/schoolFragment">
     <fragment
-        android:id="@+id/helloWorld"
-        android:name="com.numan947.nychighschools.HelloWorld"
-        android:label="fragment_hello_world"
-        tools:layout="@layout/fragment_hello_world" />
+        android:id="@+id/schoolFragment"
+        android:name="com.numan947.nychighschools.ui.schoollist.SchoolFragment"
+        android:label="SchoolFragment"
+        tools:layout="@layout/fragment_school"
+        />
+    <fragment
+        android:id="@+id/schoolDetails"
+        android:name="com.numan947.nychighschools.ui.schooldetails.SchoolDetails"
+        android:label="SchoolDetails"
+        tools:layout="@layout/fragment_school_details"
+        />
 </navigation>

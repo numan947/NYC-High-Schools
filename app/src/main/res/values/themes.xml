@@ -1,9 +1,31 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.NYCHighSchools" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Common attributes for both light and dark themes -->
+        <item name="android:colorPrimary">@color/darkPrimary</item>
+        <item name="android:colorPrimaryDark">@color/darkPrimaryDark</item>
+        <item name="android:colorAccent">@color/darkAccent</item>
+
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:colorBackground">@color/lightBackground</item>
+        <item name="android:textColorPrimary">@color/lightTextPrimary</item>
+        <item name="android:textColorSecondary">@color/lightTextSecondary</item>
     </style>
 
+    <!-- Theme for light mode -->
+    <style name="Theme.NYCHighSchools.Light" parent="Base.Theme.NYCHighSchools">
+        <item name="android:colorBackground">@color/lightBackground</item>
+        <item name="android:textColorPrimary">@color/lightTextPrimary</item>
+        <item name="android:textColorSecondary">@color/lightTextSecondary</item>
+    </style>
+
+    <!-- Theme for dark mode -->
+    <style name="Theme.NYCHighSchools.Dark" parent="Base.Theme.NYCHighSchools">
+        <item name="android:colorBackground">@color/darkBackground</item>
+        <item name="android:textColorPrimary">@color/darkTextPrimary</item>
+        <item name="android:textColorSecondary">@color/darkTextSecondary</item>
+    </style>
+
+    <!-- This theme will automatically switch between light and dark mode based on system settings -->
     <style name="Theme.NYCHighSchools" parent="Base.Theme.NYCHighSchools" />
 </resources>
