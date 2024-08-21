@@ -28,6 +28,10 @@ class SchoolFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        viewModel.data.observe(viewLifecycleOwner) {
+            println("WILL PRINT DATA HERE")
+        }
+
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = MySchoolRecyclerViewAdapter(PlaceholderContent.ITEMS)
 
