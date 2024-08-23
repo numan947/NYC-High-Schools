@@ -7,7 +7,6 @@
         <variable
             name="viewModel"
             type="com.numan947.nychighschools.ui.schoollist.SchoolListViewModel" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,6 +18,8 @@
             android:name="com.numan947.nychighschools.SchoolFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_margin="2dp"
+            android:scrollbars="vertical"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,6 +42,60 @@
             app:layout_constraintBottom_toTopOf="@+id/recycler_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"
+                android:padding="2dp"
+                >
+                <ImageButton
+                    android:id="@+id/saved_schools"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_save_24"
+                    app:tint="#D4C9E4"
+                    android:contentDescription="Saved Schools"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintEnd_toEndOf="parent" />
+                <ImageButton
+                    android:id="@+id/refresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:tint="#D4C9E4"
+                    android:src="@drawable/twotone_refresh_24"
+                    android:contentDescription="Settings"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:layout_constraintEnd_toStartOf="@id/saved_schools" />
+            </LinearLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.499" />
+        <TextView
+            android:id="@+id/error_text"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.499" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
