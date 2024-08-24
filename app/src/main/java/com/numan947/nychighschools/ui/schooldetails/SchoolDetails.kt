@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -35,28 +36,119 @@ class SchoolDetails : Fragment() {
             binding.apply {
                 tvSchoolName.text = it.name
                 tvSchoolAddress.text = buildString {
-                    "Address: ${it.address}\n"
+                    append("Address:")
+                    append(it.address?:"Not Available")
                 }
                 tvSchoolEmail.text = buildString {
                     append("Email: ")
-                    append(it.email)
+                    append(it.email?:"Not Available")
                 }
                 tvSchoolWebsite.text = buildString {
                     append("Website: ")
-                    append(it.website)
+                    append(it.website?:"Not Available")
                 }
                 tvSchoolPhone.text = buildString {
                     append("Phone: ")
-                    append(it.phone)
+                    append(it.phone?:"Not Available")
                 }
                 tvSchoolOverview.text = buildString {
                     append("Overview:\n")
-                    append(it.overview)
+                    append(it.overview?:"Not Available")
+                }
+                tvOppurtunities.text = buildString {
+                    append("Opportunities:\n")
+                    if (it.opportunities1!=null) {
+                        append(it.opportunities1)
+                    }
+                    if (it.opportunities2!=null) {
+                        append("\n")
+                        append(it.opportunities2)
+                    }
+                    if (it.opportunities1==null && it.opportunities2==null) {
+                        append("Not Available")
+                    }
+                }
+                tvTotalStudents.text = buildString {
+                    append("Total Students: ")
+                    append(it.totalStudents?:"Not Available")
+                }
+                tvGraduationRate.text = buildString {
+                    append("Graduation Rate: ")
+                    if (it.graduationRate == null) {
+                        append("Not Available")
+                    } else
+                        append(String.format("%.2f%%", it.graduationRate?.times(100)))
+                }
+                attendanceRate.text = buildString {
+                    append("Attendance Rate: ")
+                    if (it.attendanceRate == null) {
+                        append("Not Available")
+                    } else
+                        append(String.format("%.2f%%", it.attendanceRate?.times(100)))
+
+                }
+                collegeCareerRate.text = buildString {
+                    append("College Career Rate: ")
+                    if (it.collegeCareerRate == null) {
+                        append("Not Available")
+                    } else
+                        append(String.format("%.2f%%", it.collegeCareerRate?.times(100)))
+                }
+                tvSATTestTakers.text = buildString {
+                    append("Total SAT Test Takers: ")
+                    if (it.satTestTakers == -1) {
+                        append("Not Available")
+                    } else
+                    append(it.satTestTakers?:"Not Available")
+                }
+                tvReadingAvg.text = buildString {
+                    append("Reading Avg: ")
+                    if (it.satCriticalReadingAvgScore == -1.0) {
+                        append("Not Available")
+                    } else
+                    append(it.satCriticalReadingAvgScore?:"Not Available")
+                }
+                tvMathAvg.text = buildString {
+                    append("Math Avg: ")
+                    if (it.satMathAvgScore == -1.0) {
+                        append("Not Available")
+                    } else
+                    append(it.satMathAvgScore?:"Not Available")
+                }
+                tvWritingAvg.text = buildString {
+                    append("Writing Avg: ")
+                    if (it.satWritingAvgScore == -1.0) {
+                        append("Not Available")
+                    } else
+                    append(it.satWritingAvgScore?:"Not Available")
                 }
             }
         }
 
+        viewModel.loading.observe(viewLifecycleOwner) { loading->
+            if (loading) {
+                binding.progressBar.visibility = View.VISIBLE
+                binding.detailsScroll.visibility = View.INVISIBLE
+                binding.saveOrDeleteSchool.visibility = View.GONE
+            } else {
+                binding.progressBar.visibility = View.GONE
+                binding.detailsScroll.visibility = View.VISIBLE
+                binding.saveOrDeleteSchool.visibility = View.VISIBLE
+            }
+        }
+
+        viewModel.saveStateData.observe(viewLifecycleOwner) { isSaved->
+            if (isSaved) {
+                binding.saveOrDeleteSchool.setImageResource(R.drawable.baseline_bookmark_remove_24)
+            } else {
+                binding.saveOrDeleteSchool.setImageResource(R.drawable.baseline_download_for_offline_24)
+            }
+        }
+
         binding.toolbar.setTitle("School Details")
+        binding.saveOrDeleteSchool.setOnClickListener{
+            viewModel.saveOrDeleteSchool()
+        }
 
         viewModel.getHighSchoolScores()
 

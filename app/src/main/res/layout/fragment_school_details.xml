@@ -5,6 +5,7 @@
 
 
     <data>
+
         <variable
             name="viewModel"
             type="com.numan947.nychighschools.ui.schooldetails.SchoolDetailsViewModel" />
@@ -12,15 +13,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <ScrollView
             android:id="@+id/detailsScroll"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="5dp"
-            android:background="#5B4295"
+            android:background="#201F22"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -38,6 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:ellipsize="end"
                     android:text="School Name"
                     android:textColor="@color/darkTextPrimary"
                     android:textSize="20sp"
@@ -46,6 +47,7 @@
                 <TextView
                     android:id="@+id/tvSchoolAddress"
                     android:layout_width="match_parent"
+                    android:ellipsize="end"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="School Address"
@@ -55,6 +57,7 @@
                 <TextView
                     android:id="@+id/tvSchoolEmail"
                     android:layout_width="match_parent"
+                    android:ellipsize="end"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="School Email"
@@ -66,6 +69,7 @@
                     android:id="@+id/tvSchoolPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:layout_marginTop="5dp"
                     android:text="School Phone"
                     android:textColor="@color/darkTextSecondary"
@@ -75,6 +79,7 @@
                     android:id="@+id/tvSchoolWebsite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:layout_marginTop="5dp"
                     android:text="School Website"
                     android:textColor="@color/darkTextSecondary"
@@ -86,8 +91,113 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="School Overview"
+                    android:ellipsize="end"
                     android:textColor="@color/darkTextSecondary"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tvOppurtunities"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Oppurtunities"
+                    android:ellipsize="end"
+                    android:textColor="@color/darkTextSecondary"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="School's Student Body Statistics"
+                    android:textColor="@color/darkTextSecondary"
+                    android:textSize="20sp"
+                    android:ellipsize="end"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/tvTotalStudents"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Students: "
+                    android:ellipsize="end"
+                    android:textColor="@color/darkTextSecondary"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/tvGraduationRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:text="Graduation Rate: "
+                    android:textColor="@color/darkTextSecondary"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/attendanceRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Attendance Rate: "
+                    android:textColor="@color/darkTextSecondary"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/collegeCareerRate"
+                    android:layout_width="wrap_content"
+                    android:ellipsize="end"
+                    android:layout_height="wrap_content"
+                    android:text="College Career Rate: "
+                    android:textColor="@color/darkTextSecondary"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="SAT Scores Statistics"
+                    android:ellipsize="end"
+                    android:textColor="@color/darkTextSecondary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/tvSATTestTakers"
+                    android:text="Total SAT Test Takers: "
+                    android:ellipsize="end"
+                    android:textColor="@color/darkTextSecondary"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/tvReadingAvg"
+                    android:text="Reading Avg: "
+                    android:ellipsize="end"
+                    android:textColor="@color/darkTextSecondary"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/tvMathAvg"
+                    android:text="Math Avg: "
+                    android:ellipsize="end"
+                    android:textColor="@color/darkTextSecondary"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/tvWritingAvg"
+                    android:text="Writing Avg: "
+                    android:ellipsize="end"
+                    android:textColor="@color/darkTextSecondary"
+                    android:textSize="16sp"
+                    />
             </LinearLayout>
         </ScrollView>
 
@@ -99,13 +209,44 @@
             android:background="@color/cardview_dark_background"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            app:layout_constraintBottom_toTopOf="@+id/scrollView4"
+            app:layout_constraintBottom_toTopOf="@+id/detailsScroll"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:titleTextColor="@color/darkTextPrimary" />
+            app:titleTextColor="@color/darkTextPrimary">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="end"
+                >
+                <ImageButton
+                    android:id="@+id/save_or_delete_school"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_download_for_offline_24"
+                    app:tint="#D4C9E4"
+                    android:contentDescription="Save or Delete School"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </LinearLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:indeterminateTint="@color/darkTextPrimary"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.499" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

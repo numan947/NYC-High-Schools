@@ -1,5 +1,10 @@
 package com.numan947.nychighschools.domain
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.numan947.nychighschools.data.local.SchoolDetailsEntity
+
+
 data class SchoolDetailsModel(
     // whether saved or not
     var isSaved: Boolean = false,
@@ -31,4 +36,33 @@ data class SchoolDetailsModel(
     var satCriticalReadingAvgScore: Double?,
     var satMathAvgScore: Double?,
     var satWritingAvgScore: Double?
-)
+){
+    companion object{
+        fun fromSchoolDetailsEntity(schoolDetailsEntity: SchoolDetailsEntity): SchoolDetailsModel {
+            return SchoolDetailsModel(
+                isSaved = true,
+                dbn = schoolDetailsEntity.dbn,
+                name = schoolDetailsEntity.name,
+                address = schoolDetailsEntity.address,
+                email = schoolDetailsEntity.email,
+                website = schoolDetailsEntity.website,
+                phone = schoolDetailsEntity.phone,
+                latitude = schoolDetailsEntity.latitude,
+                longitude = schoolDetailsEntity.longitude,
+                overview = schoolDetailsEntity.overview,
+                opportunities1 = schoolDetailsEntity.opportunities1,
+                opportunities2 = schoolDetailsEntity.opportunities2,
+                totalStudents = schoolDetailsEntity.totalStudents,
+                graduationRate = schoolDetailsEntity.graduationRate,
+                attendanceRate = schoolDetailsEntity.attendanceRate,
+                collegeCareerRate = schoolDetailsEntity.collegeCareerRate,
+                startTime = schoolDetailsEntity.startTime,
+                endTime = schoolDetailsEntity.endTime,
+                satTestTakers = schoolDetailsEntity.satTestTakers,
+                satCriticalReadingAvgScore = schoolDetailsEntity.satCriticalReadingAvgScore,
+                satMathAvgScore = schoolDetailsEntity.satMathAvgScore,
+                satWritingAvgScore = schoolDetailsEntity.satWritingAvgScore
+            )
+        }
+    }
+}

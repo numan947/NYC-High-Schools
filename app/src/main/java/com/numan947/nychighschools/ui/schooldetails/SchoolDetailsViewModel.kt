@@ -3,27 +3,33 @@ package com.numan947.nychighschools.ui.schooldetails
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.numan947.nychighschools.data.local.SchoolDetailsEntity
+import com.numan947.nychighschools.data.local.SchoolDetailsRepository
 import com.numan947.nychighschools.data.network.ApiService
 import com.numan947.nychighschools.domain.HighSchoolListItem
-import com.numan947.nychighschools.domain.HighSchoolScores
 import com.numan947.nychighschools.domain.SchoolDetailsModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class SchoolDetailsViewModel @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val schoolDetailsRepository: SchoolDetailsRepository
 ) : ViewModel() {
     private var isLoading = MutableLiveData<Boolean>()
+    private var saveState = MutableLiveData<Boolean>()
     private var highSchoolListItem: HighSchoolListItem? = null
     private var schoolDetails: MutableLiveData<SchoolDetailsModel> = MutableLiveData()
+
+    val saveStateData: MutableLiveData<Boolean> get() = saveState
     val data: MutableLiveData<SchoolDetailsModel> get() = schoolDetails
+    val loading: MutableLiveData<Boolean> get() = isLoading
 
     fun setSchool(school: HighSchoolListItem) {
         highSchoolListItem = school
         schoolDetails.value = SchoolDetailsModel(
+            isSaved = school.isSaved,
             dbn = school.dbn,
             name = school.school_name,
             address = buildString {
@@ -51,32 +57,63 @@ class SchoolDetailsViewModel @Inject constructor(
             satMathAvgScore = -1.0,
             satWritingAvgScore = -1.0
         )
+        saveState.value = school.isSaved
     }
 
     fun getHighSchoolScores() {
         if (highSchoolListItem == null) return
         viewModelScope.launch {
             isLoading.postValue(true)
-            val response = apiService.getAllSATScores(highSchoolListItem!!.dbn)
-            if (response.isSuccessful) {
-                val scores = response.body()!!
-                if (scores.isEmpty()) { //TODO: handle when no scores are available
-                    isLoading.postValue(false)
-                    return@launch
+            try {
+                // check if the school is already saved, if yes then fetch data from local db
+                if (highSchoolListItem!!.isSaved) {
+//                    println("Fetching from local db")
+                    val details = schoolDetailsRepository.getSchoolDetails(highSchoolListItem!!.dbn)
+                    if (details != null) {
+                        schoolDetails.postValue(SchoolDetailsModel.fromSchoolDetailsEntity(details))
+                        isLoading.postValue(false)
+                        return@launch
+                    }
                 }
-                schoolDetails.postValue(
-                    schoolDetails.value!!.copy(
-                        satTestTakers = scores[0].numOfSatTestTakers.toIntOrNull(),
-                        satCriticalReadingAvgScore = scores[0].satCriticalReadingAvgScore.toDoubleOrNull(),
-                        satMathAvgScore = scores[0].satMathAvgScore.toDoubleOrNull(),
-                        satWritingAvgScore = scores[0].satWritingAvgScore.toDoubleOrNull()
+
+//                println("Fetching from network")
+                val response = apiService.getAllSATScores(highSchoolListItem!!.dbn)
+                if (response.isSuccessful) {
+                    val scores = response.body()!!
+                    if (scores.isEmpty()) { //TODO: handle when no scores are available
+                        isLoading.postValue(false)
+                        return@launch
+                    }
+                    schoolDetails.postValue(
+                        schoolDetails.value!!.copy(
+                            satTestTakers = scores[0].numOfSatTestTakers.toIntOrNull(),
+                            satCriticalReadingAvgScore = scores[0].satCriticalReadingAvgScore.toDoubleOrNull(),
+                            satMathAvgScore = scores[0].satMathAvgScore.toDoubleOrNull(),
+                            satWritingAvgScore = scores[0].satWritingAvgScore.toDoubleOrNull()
+                        )
                     )
-                )
-                println("SAT Scores: $scores")
+                    isLoading.postValue(false)
+                }
             }
-            isLoading.postValue(false)
+            catch (e: Exception) {
+                isLoading.postValue(false)
+                return@launch
+            }
         }
     }
 
-
+    fun saveOrDeleteSchool() {
+        if (highSchoolListItem == null) return
+        viewModelScope.launch {
+            val school = schoolDetails.value!!
+            if (school.isSaved) {
+                schoolDetailsRepository.deleteSchoolDetails(SchoolDetailsEntity.fromSchoolDetailsModel(school))
+                saveState.postValue(false)
+            } else {
+                schoolDetailsRepository.insertSchoolDetails(SchoolDetailsEntity.fromSchoolDetailsModel(school))
+                saveState.postValue(true)
+            }
+            schoolDetails.postValue(school.copy(isSaved = !school.isSaved))
+        }
+    }
 }

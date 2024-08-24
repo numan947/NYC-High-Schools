@@ -2,23 +2,16 @@ package com.numan947.nychighschools.ui.schoollist
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.numan947.nychighschools.R
 import com.numan947.nychighschools.databinding.FragmentItemListBinding
-import com.numan947.nychighschools.databinding.FragmentItemListBindingImpl
-import com.numan947.nychighschools.databinding.FragmentSchoolDetailsBinding
 import com.numan947.nychighschools.domain.HighSchoolListItem
-import com.numan947.nychighschools.placeholder.PlaceholderContent
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.ArrayList
 
 
 @AndroidEntryPoint
@@ -33,11 +26,11 @@ class SchoolFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        viewModel.data.observe(viewLifecycleOwner) {
+        viewModel.highSchoolListLiveData.observe(viewLifecycleOwner) {
             binding.apply {
-                if (it.isSuccessful) {
+                if (it != null) {
                     // recyclerview
-                    val adapter = MySchoolRecyclerViewAdapter(it.body()!!) {
+                    val adapter = MySchoolRecyclerViewAdapter(it) {
                         showSchoolDetails(it)
                     }
                     recyclerView.adapter = adapter
@@ -53,12 +46,12 @@ class SchoolFragment : Fragment() {
                     // recyclerview
                     recyclerView.visibility = View.INVISIBLE
                     // toolbar buttons
-                    binding.refresh.visibility = View.VISIBLE
-                    binding.savedSchools.visibility = View.VISIBLE
+                    refresh.visibility = View.VISIBLE
+                    savedSchools.visibility = View.VISIBLE
                     // progress bar and error text
-                    binding.errorText.visibility = View.VISIBLE
-                    binding.errorText.text = "Error: ${it.errorBody().toString()}"
-                    binding.progressBar.visibility = View.GONE
+                    errorText.visibility = View.VISIBLE
+                    errorText.text = "Error loading schools"
+                    progressBar.visibility = View.GONE
                 }
             }
         }
@@ -78,14 +71,16 @@ class SchoolFragment : Fragment() {
     }
 
     private fun loadSchools(){
-        // hide recyclerview
-        binding.recyclerView.visibility = View.INVISIBLE
-        // hide toolbar buttons
-        binding.savedSchools.visibility = View.GONE
-        binding.refresh.visibility = View.GONE
-        // show progress bar
-        binding.progressBar.visibility = View.VISIBLE
-        binding.errorText.visibility = View.GONE
+        binding.apply {
+            // hide recyclerview
+            recyclerView.visibility = View.INVISIBLE
+            // hide toolbar buttons
+            savedSchools.visibility = View.GONE
+            refresh.visibility = View.GONE
+            // show progress bar
+            progressBar.visibility = View.VISIBLE
+            errorText.visibility = View.GONE
+        }
 
         viewModel.getHighSchools()
     }

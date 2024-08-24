@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class HighSchoolListItem(
+    var isSaved:Boolean = false,
     // school identification and location
     @SerializedName("dbn")
     val dbn: String,

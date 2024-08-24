@@ -3,6 +3,7 @@ package com.numan947.nychighschools.ui.schoollist
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 
 import com.numan947.nychighschools.placeholder.PlaceholderContent.PlaceholderItem
@@ -41,6 +42,7 @@ class MySchoolRecyclerViewAdapter(
         val phone: TextView = binding.phoneNumber
         val website: TextView = binding.website
         val email: TextView = binding.email
+        val bookmark: ImageView = binding.bookmark
 
         fun bind(item: HighSchoolListItem) {
             name.text = item.school_name
@@ -65,6 +67,11 @@ class MySchoolRecyclerViewAdapter(
             email.text = buildString {
                 append("Email: ")
                 append(item.school_email)
+            }
+            if (item.isSaved) {
+                bookmark.visibility = ImageView.VISIBLE
+            } else {
+                bookmark.visibility = ImageView.GONE
             }
         }
     }
