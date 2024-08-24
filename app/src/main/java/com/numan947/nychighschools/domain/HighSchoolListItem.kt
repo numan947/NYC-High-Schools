@@ -1,8 +1,11 @@
 package com.numan947.nychighschools.domain
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class HighSchoolListItem(
     // school identification and location
     @SerializedName("dbn")
@@ -53,4 +56,4 @@ data class HighSchoolListItem(
     val start_time: String?,
     @SerializedName("end_time")
     val end_time: String?,
-)
+) : Parcelable

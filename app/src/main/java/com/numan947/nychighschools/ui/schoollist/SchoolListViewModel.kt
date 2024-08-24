@@ -8,6 +8,8 @@ import com.numan947.nychighschools.data.network.ApiService
 import com.numan947.nychighschools.domain.HighSchoolList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -15,21 +17,23 @@ import javax.inject.Inject
 class SchoolListViewModel @Inject constructor(
     private val apiService: ApiService
 ):ViewModel() {
-    public var isLoading = MutableLiveData<Boolean>()
+    private var isLoading = MutableLiveData<Boolean>()
     private val _data = MutableLiveData<Response<HighSchoolList>>()
     val data:LiveData<Response<HighSchoolList>>get() = _data
 
     fun getHighSchools(){
         viewModelScope.launch {
             isLoading.postValue(true)
+            try{
             val response = apiService.getAllHighSchools()
-            if (response.isSuccessful){
-                _data.postValue(response)
+            _data.postValue(response)
+            isLoading.postValue(false)
+            }catch (e:Exception){
+                e.printStackTrace()
                 isLoading.postValue(false)
-            }else{
-                // handle error
+                //TODO: Need to fix the error view later
+                _data.postValue(Response.error(400, "${e.message}".toResponseBody()))
             }
         }
     }
-
 }

@@ -5,57 +5,61 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.numan947.nychighschools.R
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SchoolDetails.newInstance] factory method to
- * create an instance of this fragment.
- */
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.numan947.nychighschools.databinding.FragmentSchoolDetailsBinding
+import com.numan947.nychighschools.domain.HighSchoolListItem
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class SchoolDetails : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentSchoolDetailsBinding
+    private val viewModel: SchoolDetailsViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_school_details, container, false)
-    }
+        binding = FragmentSchoolDetailsBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        arguments?.let {
+            val args: SchoolDetailsArgs by navArgs()
+            viewModel.setSchool(args.schoolData)
+        }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SchoolDetails.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SchoolDetails().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        viewModel.data.observe(viewLifecycleOwner) {
+            binding.apply {
+                tvSchoolName.text = it.name
+                tvSchoolAddress.text = buildString {
+                    "Address: ${it.address}\n"
+                }
+                tvSchoolEmail.text = buildString {
+                    append("Email: ")
+                    append(it.email)
+                }
+                tvSchoolWebsite.text = buildString {
+                    append("Website: ")
+                    append(it.website)
+                }
+                tvSchoolPhone.text = buildString {
+                    append("Phone: ")
+                    append(it.phone)
+                }
+                tvSchoolOverview.text = buildString {
+                    append("Overview:\n")
+                    append(it.overview)
                 }
             }
+        }
+
+        binding.toolbar.setTitle("School Details")
+
+        viewModel.getHighSchoolScores()
+
+        return binding.root
     }
 }

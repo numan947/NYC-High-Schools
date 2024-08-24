@@ -8,12 +8,28 @@
         android:id="@+id/schoolFragment"
         android:name="com.numan947.nychighschools.ui.schoollist.SchoolFragment"
         android:label="SchoolFragment"
-        tools:layout="@layout/fragment_school"
-        />
+        tools:layout="@layout/fragment_school">
+        <action
+            android:id="@+id/action_schoolFragment_to_schoolDetails"
+            app:destination="@id/schoolDetails"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            >
+            <argument
+                android:name="schoolData"
+                app:argType="com.numan947.nychighschools.domain.HighSchoolListItem" />
+        </action>
+
+    </fragment>
     <fragment
         android:id="@+id/schoolDetails"
         android:name="com.numan947.nychighschools.ui.schooldetails.SchoolDetails"
         android:label="SchoolDetails"
-        tools:layout="@layout/fragment_school_details"
-        />
+        tools:layout="@layout/fragment_school_details">
+        <argument
+            android:name="schoolData"
+            app:argType="com.numan947.nychighschools.domain.HighSchoolListItem" />
+    </fragment>
 </navigation>

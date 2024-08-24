@@ -10,9 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.numan947.nychighschools.R
 import com.numan947.nychighschools.databinding.FragmentItemListBinding
 import com.numan947.nychighschools.databinding.FragmentItemListBindingImpl
+import com.numan947.nychighschools.databinding.FragmentSchoolDetailsBinding
+import com.numan947.nychighschools.domain.HighSchoolListItem
 import com.numan947.nychighschools.placeholder.PlaceholderContent
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
@@ -34,7 +37,9 @@ class SchoolFragment : Fragment() {
             binding.apply {
                 if (it.isSuccessful) {
                     // recyclerview
-                    val adapter = MySchoolRecyclerViewAdapter(it.body()!!)
+                    val adapter = MySchoolRecyclerViewAdapter(it.body()!!) {
+                        showSchoolDetails(it)
+                    }
                     recyclerView.adapter = adapter
                     recyclerView.visibility = View.VISIBLE
                     // toolbar buttons
@@ -83,5 +88,10 @@ class SchoolFragment : Fragment() {
         binding.errorText.visibility = View.GONE
 
         viewModel.getHighSchools()
+    }
+
+    private fun showSchoolDetails(highSchoolListItem: HighSchoolListItem){
+        SchoolFragmentDirections.actionSchoolFragmentToSchoolDetails(highSchoolListItem)
+            .also { findNavController().navigate(it) }
     }
 }

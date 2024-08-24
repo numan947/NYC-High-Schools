@@ -11,7 +11,8 @@ import com.numan947.nychighschools.domain.HighSchoolListItem
 
 
 class MySchoolRecyclerViewAdapter(
-    private val values: ArrayList<HighSchoolListItem>
+    private val values: ArrayList<HighSchoolListItem>,
+    private val onClickListener: (HighSchoolListItem)->Unit
 ) : RecyclerView.Adapter<MySchoolRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,6 +28,9 @@ class MySchoolRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
         holder.bind(item)
+        holder.itemView.setOnClickListener {
+            onClickListener(item)
+        }
     }
 
     override fun getItemCount(): Int = values.size
