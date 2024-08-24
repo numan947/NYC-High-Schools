@@ -33,10 +33,13 @@ class SchoolDetailsViewModel @Inject constructor(
             dbn = school.dbn,
             name = school.school_name,
             address = buildString {
-                school.primary_address_line_1
-                school.city
-                school.state_code
-                school.zip
+                append(school.primary_address_line_1)
+                append(", ")
+                append(school.city)
+                append(", ")
+                append(school.state_code)
+                append(", ")
+                append(school.zip)
             },
             email = school.school_email,
             website = school.website,

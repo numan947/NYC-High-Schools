@@ -6,9 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.numan947.nychighschools.R
 import com.numan947.nychighschools.databinding.FragmentItemListBinding
 import com.numan947.nychighschools.domain.HighSchoolListItem
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,7 +18,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SchoolFragment : Fragment() {
     private val viewModel: SchoolListViewModel by viewModels()
-    private lateinit var binding:FragmentItemListBinding
+    private lateinit var binding: FragmentItemListBinding
+    private var showSavedOnly: Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,17 +62,30 @@ class SchoolFragment : Fragment() {
         binding.schoolListToolbar.title = "NYC High Schools"
 
         binding.refresh.setOnClickListener {
-            loadSchools()
+            loadSchools(showSavedOnly, true)
         }
         binding.savedSchools.setOnClickListener {
-            Toast.makeText(context, "Saved Schools", Toast.LENGTH_SHORT).show()
+            showSavedOnly = !showSavedOnly
+            loadSchools(showSavedOnly)
+            changeButtonIcon()
         }
 
-        loadSchools()
+        changeButtonIcon()
+        loadSchools(showSavedOnly)
         return binding.root
     }
 
-    private fun loadSchools(){
+    private fun changeButtonIcon() {
+        if (showSavedOnly) {
+            binding.savedSchools.setImageResource(R.drawable.baseline_cloud_24)
+        } else {
+            binding.savedSchools.setImageResource(R.drawable.baseline_save_24)
+        }
+        binding.savedSchools.setColorFilter(ContextCompat.getColor(requireContext(), R.color.toolbarButtonTint))
+    }
+
+    private fun loadSchools(showSavedOnly: Boolean = false, forceNetwork: Boolean = false) {
+        println("loadSchools: $showSavedOnly")
         binding.apply {
             // hide recyclerview
             recyclerView.visibility = View.INVISIBLE
@@ -81,11 +96,13 @@ class SchoolFragment : Fragment() {
             progressBar.visibility = View.VISIBLE
             errorText.visibility = View.GONE
         }
-
-        viewModel.getHighSchools()
+        if (showSavedOnly)
+            viewModel.getHighSchoolsFromDb()
+        else
+            viewModel.getHighSchoolsFromNetwork(forceNetwork)
     }
 
-    private fun showSchoolDetails(highSchoolListItem: HighSchoolListItem){
+    private fun showSchoolDetails(highSchoolListItem: HighSchoolListItem) {
         SchoolFragmentDirections.actionSchoolFragmentToSchoolDetails(highSchoolListItem)
             .also { findNavController().navigate(it) }
     }

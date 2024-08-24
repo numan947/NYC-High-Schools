@@ -17,4 +17,6 @@ interface SchoolDetailsDao {
     @Query("SELECT dbn FROM school_details")
     suspend fun getSavedSchools(): List<String>
 
+    @Query("SELECT * FROM school_details")
+    suspend fun getAllSchoolDetails(): List<SchoolDetailsEntity>
 }

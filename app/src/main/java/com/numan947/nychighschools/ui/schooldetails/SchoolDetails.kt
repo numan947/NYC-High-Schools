@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -33,10 +34,12 @@ class SchoolDetails : Fragment() {
         }
 
         viewModel.data.observe(viewLifecycleOwner) {
+            println("School is saved: --> ${it.address}")
+
             binding.apply {
                 tvSchoolName.text = it.name
                 tvSchoolAddress.text = buildString {
-                    append("Address:")
+                    append("Address: ")
                     append(it.address?:"Not Available")
                 }
                 tvSchoolEmail.text = buildString {
@@ -140,8 +143,10 @@ class SchoolDetails : Fragment() {
         viewModel.saveStateData.observe(viewLifecycleOwner) { isSaved->
             if (isSaved) {
                 binding.saveOrDeleteSchool.setImageResource(R.drawable.baseline_bookmark_remove_24)
+                binding.saveOrDeleteSchool.setColorFilter(ContextCompat.getColor(requireContext(), R.color.toolbarButtonTint))
             } else {
                 binding.saveOrDeleteSchool.setImageResource(R.drawable.baseline_download_for_offline_24)
+                binding.saveOrDeleteSchool.setColorFilter(ContextCompat.getColor(requireContext(), R.color.toolbarButtonTint))
             }
         }
 

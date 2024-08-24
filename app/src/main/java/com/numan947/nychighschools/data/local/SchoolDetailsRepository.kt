@@ -20,4 +20,8 @@ class SchoolDetailsRepository @Inject constructor(private val schoolDetailsDao: 
     suspend fun getSavedSchools(): List<String> {
         return schoolDetailsDao.getSavedSchools()
     }
+
+    suspend fun getAllSchoolDetails(): List<SchoolDetailsEntity> {
+        return schoolDetailsDao.getAllSchoolDetails()
+    }
 }

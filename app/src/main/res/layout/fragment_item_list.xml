@@ -52,21 +52,22 @@
                 android:layout_margin="10dp"
                 android:padding="2dp"
                 >
+
                 <ImageButton
                     android:id="@+id/saved_schools"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/baseline_save_24"
-                    app:tint="#D4C9E4"
-                    android:contentDescription="Saved Schools"
-                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_height="28dp"
                     android:layout_marginEnd="10dp"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Saved Schools"
+                    android:src="@drawable/baseline_save_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:tint="@color/toolbarButtonTint" />
                 <ImageButton
                     android:id="@+id/refresh"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:tint="#D4C9E4"
+                    app:tint="@color/toolbarButtonTint"
                     android:src="@drawable/twotone_refresh_24"
                     android:contentDescription="Settings"
                     android:background="?attr/selectableItemBackgroundBorderless"
@@ -88,9 +89,10 @@
         <TextView
             android:id="@+id/error_text"
             style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
