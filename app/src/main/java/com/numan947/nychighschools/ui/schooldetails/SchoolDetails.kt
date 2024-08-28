@@ -1,6 +1,7 @@
 package com.numan947.nychighschools.ui.schooldetails
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SchoolDetails : Fragment() {
     private lateinit var binding: FragmentSchoolDetailsBinding
     private val viewModel: SchoolDetailsViewModel by viewModels()
+    private var highSchoolListItem: HighSchoolListItem? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,12 +32,11 @@ class SchoolDetails : Fragment() {
         binding.viewModel = viewModel
         arguments?.let {
             val args: SchoolDetailsArgs by navArgs()
-            viewModel.setSchool(args.schoolData)
+            highSchoolListItem = args.schoolData
+            viewModel.setSchool(highSchoolListItem!!)
         }
 
         viewModel.data.observe(viewLifecycleOwner) {
-            println("School is saved: --> ${it.address}")
-
             binding.apply {
                 tvSchoolName.text = it.name
                 tvSchoolAddress.text = buildString {

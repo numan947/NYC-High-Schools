@@ -1,13 +1,13 @@
 package com.numan947.nychighschools.ui.schooldetails
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.numan947.nychighschools.data.local.SchoolDetailsEntity
-import com.numan947.nychighschools.data.local.SchoolDetailsRepository
+import com.numan947.nychighschools.data.local.SchoolDetailsRepositoryInterface
 import com.numan947.nychighschools.data.network.ApiService
 import com.numan947.nychighschools.domain.HighSchoolListItem
-import com.numan947.nychighschools.domain.SchoolDetailsModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,20 +15,20 @@ import javax.inject.Inject
 @HiltViewModel
 class SchoolDetailsViewModel @Inject constructor(
     private val apiService: ApiService,
-    private val schoolDetailsRepository: SchoolDetailsRepository
+    private val schoolDetailsRepository: SchoolDetailsRepositoryInterface
 ) : ViewModel() {
     private var isLoading = MutableLiveData<Boolean>()
     private var saveState = MutableLiveData<Boolean>()
     private var highSchoolListItem: HighSchoolListItem? = null
-    private var schoolDetails: MutableLiveData<SchoolDetailsModel> = MutableLiveData()
+    private var schoolDetails: MutableLiveData<SchoolDetailsEntity> = MutableLiveData()
 
     val saveStateData: MutableLiveData<Boolean> get() = saveState
-    val data: MutableLiveData<SchoolDetailsModel> get() = schoolDetails
+    val data: MutableLiveData<SchoolDetailsEntity> get() = schoolDetails
     val loading: MutableLiveData<Boolean> get() = isLoading
 
     fun setSchool(school: HighSchoolListItem) {
         highSchoolListItem = school
-        schoolDetails.value = SchoolDetailsModel(
+        schoolDetails.value = SchoolDetailsEntity(
             isSaved = school.isSaved,
             dbn = school.dbn,
             name = school.school_name,
@@ -73,7 +73,7 @@ class SchoolDetailsViewModel @Inject constructor(
 //                    println("Fetching from local db")
                     val details = schoolDetailsRepository.getSchoolDetails(highSchoolListItem!!.dbn)
                     if (details != null) {
-                        schoolDetails.postValue(SchoolDetailsModel.fromSchoolDetailsEntity(details))
+                        schoolDetails.postValue(details.copy(isSaved = true))
                         isLoading.postValue(false)
                         return@launch
                     }
@@ -83,7 +83,7 @@ class SchoolDetailsViewModel @Inject constructor(
                 val response = apiService.getAllSATScores(highSchoolListItem!!.dbn)
                 if (response.isSuccessful) {
                     val scores = response.body()!!
-                    if (scores.isEmpty()) { //TODO: handle when no scores are available
+                    if (scores.isEmpty()) {
                         isLoading.postValue(false)
                         return@launch
                     }
@@ -109,11 +109,12 @@ class SchoolDetailsViewModel @Inject constructor(
         if (highSchoolListItem == null) return
         viewModelScope.launch {
             val school = schoolDetails.value!!
+            Log.v( "SchoolDetails", "School is saved: --> ${school.isSaved}")
             if (school.isSaved) {
-                schoolDetailsRepository.deleteSchoolDetails(SchoolDetailsEntity.fromSchoolDetailsModel(school))
+                schoolDetailsRepository.deleteSchoolDetails(school)
                 saveState.postValue(false)
             } else {
-                schoolDetailsRepository.insertSchoolDetails(SchoolDetailsEntity.fromSchoolDetailsModel(school))
+                schoolDetailsRepository.insertSchoolDetails(school)
                 saveState.postValue(true)
             }
             schoolDetails.postValue(school.copy(isSaved = !school.isSaved))

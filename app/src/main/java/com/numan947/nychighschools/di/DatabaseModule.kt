@@ -3,6 +3,9 @@ package com.numan947.nychighschools.di
 import android.content.Context
 import androidx.room.Room
 import com.numan947.nychighschools.data.local.AppDB
+import com.numan947.nychighschools.data.local.SchoolDetailsDao
+import com.numan947.nychighschools.data.local.SchoolDetailsRepository
+import com.numan947.nychighschools.data.local.SchoolDetailsRepositoryInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,4 +29,7 @@ object DatabaseModule {
 
     @Provides
     fun provideSchoolDetailsDao(appDB: AppDB) = appDB.schoolDetailsDao()
+
+    @Provides
+    fun provideSchoolDetailsRepository(schoolDetailsDao: SchoolDetailsDao) = SchoolDetailsRepository(schoolDetailsDao) as SchoolDetailsRepositoryInterface
 }

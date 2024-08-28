@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.numan947.nychighschools.data.local.SchoolDetailsRepository
+import com.numan947.nychighschools.data.local.SchoolDetailsRepositoryInterface
 import com.numan947.nychighschools.data.network.ApiService
 import com.numan947.nychighschools.domain.HighSchoolListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SchoolListViewModel @Inject constructor(
     private val apiService: ApiService,
-    private val schoolDetailsRepository: SchoolDetailsRepository
+    private val schoolDetailsRepository: SchoolDetailsRepositoryInterface
 ) : ViewModel() {
     private var isLoading = MutableLiveData<Boolean>()
     private val _hsMutableList = MutableLiveData<ArrayList<HighSchoolListItem>?>()

@@ -103,7 +103,7 @@ class SchoolFragment : Fragment() {
     }
 
     private fun showSchoolDetails(highSchoolListItem: HighSchoolListItem) {
-        SchoolFragmentDirections.actionSchoolFragmentToSchoolDetails(highSchoolListItem)
+        SchoolFragmentDirections.actionSchoolFragmentToSchoolDetails(highSchoolListItem) // safeargs
             .also { findNavController().navigate(it) }
     }
 }
