@@ -3,6 +3,7 @@ package com.numan947.nychighschools.data.local
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.numan947.nychighschools.domain.HighSchoolListItem
 
 @Entity(tableName = "school_details")
 data class SchoolDetailsEntity(
@@ -62,4 +63,42 @@ data class SchoolDetailsEntity(
         satMathAvgScore = 0.0,
         satWritingAvgScore = 0.0
     )
+
+    companion object{
+        fun fromSchoolListItem(school: HighSchoolListItem): SchoolDetailsEntity{
+            return SchoolDetailsEntity(
+                isSaved = school.isSaved,
+                dbn = school.dbn,
+                name = school.school_name,
+                address = buildString {
+                    append(school.primary_address_line_1)
+                    append(", ")
+                    append(school.city)
+                    append(", ")
+                    append(school.state_code)
+                    append(", ")
+                    append(school.zip)
+                },
+                email = school.school_email,
+                website = school.website,
+                phone = school.phone_number,
+                latitude = school.latitude,
+                longitude = school.longitude,
+                overview = school.overview_paragraph,
+                opportunities1 = school.academicopportunities1,
+                opportunities2 = school.academicopportunities2,
+                totalStudents = school.total_students,
+                graduationRate = school.graduation_rate,
+                attendanceRate = school.attendance_rate,
+                collegeCareerRate = school.college_career_rate,
+                startTime = school.start_time,
+                endTime = school.end_time,
+                satTestTakers = -1,
+                satCriticalReadingAvgScore = -1.0,
+                satMathAvgScore = -1.0,
+                satWritingAvgScore = -1.0
+            )
+        }
+    }
+
 }
